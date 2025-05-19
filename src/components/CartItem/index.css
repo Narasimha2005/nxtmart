@@ -14,11 +14,20 @@
   margin: 0px;
   margin-left: 10px;
 }
+
 .cart-item-weight {
   font-size: 20px;
   font-weight: 400;
   color: #808080;
   margin: 5px 10px;
+}
+@media screen and (max-width: 768px) {
+  .cart-item-name-and-price {
+    font-size: 14px;
+  }
+  .cart-item-weight {
+    font-size: 14px;
+  }
 }
 .cart-item-add-and-remove-button-container {
   display: flex;
@@ -38,4 +47,12 @@
   color: #088c03;
   font-size: 25px;
   margin: 0px 5px;
+}
+.cart-item-hr {
+  display: flex;
+}
+@media screen and (max-width: 768px) {
+  .cart-item-hr {
+    display: none;
+  }
 }

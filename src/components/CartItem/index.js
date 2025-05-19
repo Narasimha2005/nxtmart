@@ -1,4 +1,3 @@
-import CartContext from '../../context/CartContext'
 import './index.css'
 
 const CartItem = props => {
@@ -23,7 +22,13 @@ const CartItem = props => {
       >
         <div style={{display: 'flex'}}>
           <img src={image} alt={name} className="cart-item-image" />
-          <div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+            }}
+          >
             <p className="cart-item-name-and-price">{name}</p>
             <p className="cart-item-weight">{weight}</p>
             <p className="cart-item-name-and-price">{price}</p>
@@ -34,18 +39,18 @@ const CartItem = props => {
           className="cart-item-add-and-remove-button-container"
         >
           <button
-            data-testid="decrement-count"
+            data-testid="decrement-quantity"
             type="button"
             className="cart-item-add-and-remove-button"
             onClick={decreaseItem}
           >
             -
           </button>
-          <p style={{margin: '0px'}} data-testid="active-count">
+          <p style={{margin: '0px'}} data-testid="item-quantity">
             {count}
           </p>
           <button
-            data-testid="increment-count"
+            data-testid="increment-quantity"
             type="button"
             className="cart-item-add-and-remove-button"
             style={{marginTop: '3px'}}
@@ -55,7 +60,7 @@ const CartItem = props => {
           </button>
         </div>
       </div>
-      <hr />
+      <hr className="cart-item-hr" />
     </li>
   )
 }

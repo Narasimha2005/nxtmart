@@ -44,9 +44,9 @@ const Login = props => {
       } else {
         const apiErrorMsg = data.error_msg
         setErrorMsg({show: true, errorMsg: apiErrorMsg})
+        setName('')
+        setPassword('')
       }
-      setName('')
-      setPassword('')
     }
   }
   const onClickCheckbox = () => {
@@ -66,7 +66,10 @@ const Login = props => {
             Username
           </label>
           <div className="login-input-box">
-            <img src="https://res.cloudinary.com/dvgpe4x6t/image/upload/v1744954222/profile-circle_zoynog.png" />
+            <img
+              src="https://res.cloudinary.com/dvgpe4x6t/image/upload/v1744954222/profile-circle_zoynog.png"
+              alt="login profile iamge"
+            />
             <input
               id="username"
               type="text"
@@ -79,7 +82,10 @@ const Login = props => {
             Password
           </label>
           <div className="login-input-box">
-            <img src="https://res.cloudinary.com/dvgpe4x6t/image/upload/v1744954122/Group_14_vv0bdk.png" />
+            <img
+              src="https://res.cloudinary.com/dvgpe4x6t/image/upload/v1744954122/Group_14_vv0bdk.png"
+              alt="login password iamge"
+            />
             <input
               id="password"
               type={showPassword ? 'text' : 'password'}

@@ -13,6 +13,11 @@
   width: 330px;
   position: sticky;
 }
+@media screen and (max-width: 768px) {
+  .home-sidebar {
+    display: none;
+  }
+}
 .home-sidebar-heading {
   color: #088c03;
   font-weight: 600;
@@ -29,12 +34,18 @@
   overflow-x: scroll;
 }
 .items-container {
-  height: 100vh;
+  height: 150vh;
   overflow-y: auto;
   direction: rtl;
   width: 90%;
   margin-top: 25px;
   padding-left: 20px;
+}
+@media screen and (max-width: 768px) {
+  .items-container {
+    width: 100%;
+    padding: 10px;
+  }
 }
 .home-sidebar-categories {
   color: #191919;
@@ -42,16 +53,32 @@
   font-size: 20px;
   font-weight: 600;
 }
+.active-category {
+  background-color: #088c03;
+  color: #ffffff;
+  padding: 14px 16px;
+  border: solid 0px;
+  border-radius: 8px;
+}
+.active-category-name {
+  color: #ffffff;
+}
 .category-item {
-  margin: 20px 0px;
+  padding: 14px 16px;
 }
 .categories-container {
   list-style-type: none;
   padding-left: 0px;
 }
-.active-category {
-  background-color: black;
+.category-view-all {
+  color: #088c03;
 }
+@media screen and (min-width: 768px) {
+  .category-view-all {
+    display: none;
+  }
+}
+
 .each-category-name {
   font-size: 24px;
   font-weight: 600;
@@ -96,7 +123,11 @@
 .items-container::-webkit-scrollbar {
   width: 15px;
 }
-
+@media screen and (max-width: 768px) {
+  .items-container::-webkit-scrollbar {
+    display: none;
+  }
+}
 /* Track */
 .items-container::-webkit-scrollbar-track {
   background: #f0f0f0;
@@ -110,4 +141,43 @@
   border-radius: 50px;
   height: 92px;
   border: 5px solid #f0f0f0;
+}
+.home-mobile-categories-bar {
+  display: flex;
+  list-style-type: none;
+  padding-left: 0px;
+  overflow-x: auto;
+  position: sticky;
+  margin-top: 40px;
+  margin-bottom: 0px;
+}
+.home-mobile-categories-bar::-webkit-scrollbar {
+  display: none;
+}
+.home-mobile-categories {
+  font-size: 12px;
+  color: #19191999;
+  font-weight: 400;
+  text-decoration: none;
+}
+.mobile-category-box {
+  border: solid 0px;
+  padding: 10px;
+  background-color: #f7f7f7;
+  border-radius: 8px;
+}
+.active-mobile-category-box {
+  background-color: #088c03;
+  color: #ffffff;
+}
+[id] {
+  scroll-margin-top: 80px; /* Adjust based on sticky header height */
+}
+
+.active-mobile-category-name {
+  color: #088c03;
+  margin-top: 10px;
+}
+.mobile-category-item {
+  margin: 15px;
 }

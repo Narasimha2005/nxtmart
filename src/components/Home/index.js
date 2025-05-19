@@ -4,11 +4,12 @@ import Loader from 'react-loader-spinner'
 import {MdKeyboardArrowRight} from 'react-icons/md'
 
 import NavBar from '../NavBar'
+import MobileNavbar from '../MobileNavbar'
 import ProductItem from '../ProductItem'
 import Footer from '../Footer'
 import './index.css'
 
-const Home = props => {
+const Home = () => {
   const apiStatusConstants = {
     initial: 'INITIAL',
     success: 'SUCCESS',
@@ -21,12 +22,85 @@ const Home = props => {
     data: null,
     errorMsg: null,
   })
-
-  const changeActiveCategory = event => {
-    console.log(props.location.hash)
-    console.log(event.target.value)
-    setCategory(event.target.value)
+  const [cartData, setCartdData] = useState(
+    localStorage.getItem('cartData') === null
+      ? []
+      : JSON.parse(localStorage.getItem('cartData')),
+  )
+  //  console.log(cartData)
+  const incrementCartItem = newItem => {
+    const newList = cartData.map(eachItem => {
+      if (newItem.id === eachItem.id) {
+        return {
+          id: eachItem.id,
+          name: eachItem.name,
+          weight: eachItem.weight,
+          price: eachItem.price,
+          image: eachItem.image,
+          count: eachItem.count + 1,
+        }
+      }
+      return eachItem
+    })
+    setCartdData(newList)
+    localStorage.setItem('cartData', JSON.stringify(newList))
   }
+  const decrementCartItem = newItem => {
+    const newCartItems = cartData.map(eachItem => {
+      if (newItem.id === eachItem.id) {
+        return {
+          id: eachItem.id,
+          name: eachItem.name,
+          weight: eachItem.weight,
+          price: eachItem.price,
+          image: eachItem.image,
+          count: eachItem.count - 1,
+        }
+      }
+      return eachItem
+    })
+
+    const newList = newCartItems.filter(eachItem => {
+      if (eachItem.count < 1) {
+        return false
+      }
+      return true
+    })
+    setCartdData(newList)
+    localStorage.setItem('cartData', JSON.stringify(newList))
+  }
+  const addCartItem = newItem => {
+    const isPresent = cartData.filter(eachItem => {
+      if (newItem.id === eachItem.id) {
+        return true
+      }
+      return false
+    })
+    if (isPresent.length === 0) {
+      setCartdData(prev => [...prev, {...newItem, count: 1}])
+      localStorage.setItem(
+        'cartData',
+        JSON.stringify([...cartData, {...newItem, count: 1}]),
+      )
+    } else {
+      const newList = cartData.map(eachItem => {
+        if (newItem.id === eachItem.id) {
+          return {
+            id: eachItem.id,
+            name: eachItem.name,
+            weight: eachItem.weight,
+            price: eachItem.price,
+            image: eachItem.image,
+            count: eachItem.count + 1,
+          }
+        }
+        return eachItem
+      })
+      setCartdData(newList)
+      localStorage.setItem('cartData', JSON.stringify(newList))
+    }
+  }
+
   const getData = async () => {
     setApiResponse({
       status: apiStatusConstants.inProgress,
@@ -70,45 +144,117 @@ const Home = props => {
   const renderSuccessView = () => {
     const {data} = apiResponse
     return (
-      <div className="home-main-container">
-        <div className="home-sidebar">
-          <h1 className="home-sidebar-heading">Categories</h1>
-          <ul className="categories-container">
+      <>
+        <div>
+          <ul className="home-mobile-categories-bar">
             {data.map(eachCategory => {
               const activeCategoryClass =
-                activeCategory === eachCategory.name ? 'active-category' : ''
+                activeCategory === eachCategory.name
+                  ? 'active-mobile-category-box'
+                  : ''
+              const activeCategoryName =
+                activeCategory === eachCategory.name
+                  ? 'active-mobile-category-name'
+                  : ''
+              const changeActiveCategory = () => {
+                setCategory(eachCategory.name)
+              }
               return (
                 <li
-                  onClick={changeActiveCategory}
-                  className={`category-item ${activeCategoryClass}`}
+                  className="mobile-category-item"
+                  id={`${eachCategory.name} category`}
+                  key={`${eachCategory.name} category`}
                 >
                   <a
-                    className="home-sidebar-categories"
+                    onClick={changeActiveCategory}
+                    className={`mobile-category-box ${activeCategoryClass}`}
                     href={`#${eachCategory.name}`}
                   >
-                    {eachCategory.name}
+                    hi
                   </a>
+                  <p className={`home-mobile-categories ${activeCategoryName}`}>
+                    {eachCategory.name}
+                  </p>
                 </li>
               )
             })}
           </ul>
         </div>
-        <div className="items-container">
-          {data.map(eachCategory => (
-            <div className="products-main-container" id={eachCategory.name}>
-              <div style={{display: 'flex', alignItems: 'center'}}>
-                <h1 className="each-category-name">{eachCategory.name}</h1>
-                <MdKeyboardArrowRight style={{marginTop: '5px'}} />
+        <div className="home-main-container">
+          <div className="home-sidebar">
+            <h1 className="home-sidebar-heading">Categories</h1>
+            <ul className="categories-container">
+              {data.map(eachCategory => {
+                const activeCategoryClass =
+                  activeCategory === eachCategory.name ? 'active-category' : ''
+                const activeCategoryName =
+                  activeCategory === eachCategory.name
+                    ? 'active-category-name'
+                    : ''
+                const changeActiveCategory = () => {
+                  setCategory(eachCategory.name)
+                }
+                return (
+                  <li
+                    className={`category-item ${activeCategoryClass}`}
+                    id={`${eachCategory.name} category`}
+                    key={`${eachCategory.name} category`}
+                  >
+                    <a
+                      onClick={changeActiveCategory}
+                      className={`home-sidebar-categories ${activeCategoryName}`}
+                      href={`#${eachCategory.name}`}
+                    >
+                      {eachCategory.name}
+                    </a>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+          <div className="items-container">
+            {data.map(eachCategory => (
+              <div
+                className="products-main-container"
+                key={eachCategory.name}
+                id={eachCategory.name}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <div style={{display: 'flex', alignItems: 'center'}}>
+                    <h1 className="each-category-name">{eachCategory.name}</h1>
+                    <MdKeyboardArrowRight style={{marginTop: '5px'}} />
+                  </div>
+                  <p className="category-view-all">View All</p>
+                </div>
+                <ul className="products-container">
+                  {eachCategory.products.map(eachProduct => {
+                    const isInCart = cartData.filter(eachItem => {
+                      if (eachItem.id === eachProduct.id) return true
+                      return false
+                    })
+                    return (
+                      <ProductItem
+                        key={eachProduct.id}
+                        details={eachProduct}
+                        incrementCartItem={incrementCartItem}
+                        decrementCartItem={decrementCartItem}
+                        addCartItem={addCartItem}
+                        isInCart={isInCart}
+                      />
+                    )
+                  })}
+                </ul>
               </div>
-              <ul className="products-container">
-                {eachCategory.products.map(eachProduct => (
-                  <ProductItem key={eachProduct.id} details={eachProduct} />
-                ))}
-              </ul>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      </>
     )
   }
   const renderFailureView = () => (
@@ -142,6 +288,7 @@ const Home = props => {
     <>
       <NavBar tab="Home" />
       {renderHome()}
+      <MobileNavbar tab="Home" />
       <Footer />
     </>
   )
